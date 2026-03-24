@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vencendo a Fome | Survival Farmer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div class="vignette"></div>
+
+        <!-- Survival UI Sidebar -->
+        <aside id="sidebar">
+            <header>
+                <h1>Survival Farmer</h1>
+                <!-- Barra de Fome Crítica -->
+                <div class="hunger-system">
+                    <span class="label">Suficiência Alimentar</span>
+                    <div class="hunger-bar-container">
+                        <div id="hunger-bar-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="currency-display">
+                    <span class="icon">☀️</span>
+                    <span id="sunlight-count">20</span>
+                </div>
+            </header>
+
+            <div class="inventory-section">
+                <h3>Sementes Disponíveis</h3>
+                <div id="seed-selector" class="grid-selector"></div>
+            </div>
+
+            <div class="inventory-section">
+                <h3>Cesto de Comida</h3>
+                <div class="food-storage">
+                    <span id="food-count">0</span> unidades
+                </div>
+                <button id="eat-btn">COMER (Repor Fome)</button>
+            </div>
+
+            <div class="stats-section">
+                <div class="stat-card">
+                    <span class="label">Sobrevivência</span>
+                    <span id="play-time" class="value">00:00</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mundo de Sobrevivência -->
+        <main id="farm-viewport">
+            <div id="farm-grid"></div>
+            <div id="player">
+                <div class="player-sprite">🧑‍🌾</div>
+                <div class="player-shadow"></div>
+                <div id="interaction-ring"></div>
+            </div>
+        </main>
+
+        <!-- Alerta de Game Over Overlay -->
+        <div id="game-over" class="overlay hidden">
+            <div class="overlay-content">
+                <h2>VOCE SUCUMBIU À FOME</h2>
+                <p>O mundo é cruel com o fazendeiro despreparado.</p>
+                <button onclick="location.reload()">Tentar Sobreviver Novamente</button>
+            </div>
+        </div>
+
+        <div id="toast-container"></div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
