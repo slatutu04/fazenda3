@@ -1,15 +1,28 @@
 /**
+<<<<<<< HEAD
  * SURVIVAL FARMER: OVERCOMING HUNGER v2.0
+=======
+ * SURVIVAL FARMER: VENCENDO A FOME v2.0
+>>>>>>> 9d1c67a4c93aabb09b130b28bb8fd495c5527020
  * Implementation by Antigravity AI
  */
 
 const SEEDS = [
+<<<<<<< HEAD
     { id: 'carrot', name: 'Carrot', icon: '🥕', cost: 5, nutrition: 15, growthTime: 5000 },
     { id: 'wheat', name: 'Wheat', icon: '🌾', cost: 12, nutrition: 30, growthTime: 12000 },
     { id: 'sunflower', name: 'Sunflower', icon: '🌻', cost: 25, nutrition: 60, growthTime: 30000 },
     { id: 'blueberry', name: 'Blueberry', icon: '🫐', cost: 50, nutrition: 120, growthTime: 60000 },
     { id: 'melon', name: 'Melon', icon: '🍉', cost: 100, nutrition: 280, growthTime: 120000 },
     { id: 'pumpkin', name: 'Pumpkin', icon: '🎃', cost: 200, nutrition: 600, growthTime: 300000 }
+=======
+    { id: 'carrot', name: 'Cenoura', icon: '🥕', cost: 5, nutrition: 15, growthTime: 5000 },
+    { id: 'wheat', name: 'Trigo', icon: '🌾', cost: 12, nutrition: 30, growthTime: 12000 },
+    { id: 'sunflower', name: 'Girassol', icon: '🌻', cost: 25, nutrition: 60, growthTime: 30000 },
+    { id: 'blueberry', name: 'Mirtilo', icon: '🫐', cost: 50, nutrition: 120, growthTime: 60000 },
+    { id: 'melon', name: 'Melancia', icon: '🍉', cost: 100, nutrition: 280, growthTime: 120000 },
+    { id: 'pumpkin', name: 'Abóbora', icon: '🎃', cost: 200, nutrition: 600, growthTime: 300000 }
+>>>>>>> 9d1c67a4c93aabb09b130b28bb8fd495c5527020
 ];
 
 class SurvivalGame {
@@ -17,7 +30,6 @@ class SurvivalGame {
         // Core State
         this.sunlight = 20;
         this.hunger = 100;
-        this.foodStorage = 0;
         this.selectedSeed = SEEDS[0];
         this.farmGridData = Array(64).fill(null);
         this.startTime = Date.now();
@@ -49,14 +61,21 @@ class SurvivalGame {
         this.renderSeedsUI();
         this.renderGridUI();
         this.setupControls();
+<<<<<<< HEAD
         this.setupEatAction();
+=======
+>>>>>>> 9d1c67a4c93aabb09b130b28bb8fd495c5527020
         
         // Start Loops
         requestAnimationFrame((t) => this.gameUpdate(t));
         this.startSurvivalTick();
         
         window.addEventListener('resize', () => this.resize());
+<<<<<<< HEAD
         this.notify('🌳 Welcome to Survival Farm!', 'linear-gradient(90deg, #4CAF50, #81c784)');
+=======
+        this.notify('🌳 Bem-vindo à Fazenda de Sobrevivência!', 'linear-gradient(90deg, #4CAF50, #81c784)');
+>>>>>>> 9d1c67a4c93aabb09b130b28bb8fd495c5527020
     }
 
     resize() {
@@ -70,16 +89,24 @@ class SurvivalGame {
         window.addEventListener('keydown', e => {
             const key = e.key.toLowerCase();
             this.keys[key] = true;
+<<<<<<< HEAD
             // Hotkeys for seeds
+=======
+>>>>>>> 9d1c67a4c93aabb09b130b28bb8fd495c5527020
             if (key >= '1' && key <= '6') {
                 const idx = parseInt(key) - 1;
                 if (SEEDS[idx]) this.selectSeed(SEEDS[idx]);
             }
+<<<<<<< HEAD
             if (key === ' ' || key === 'e') this.attemptInteraction();
+=======
+            if (key === ' ' || key === 'e') this.attemptPlanting();
+>>>>>>> 9d1c67a4c93aabb09b130b28bb8fd495c5527020
         });
         window.addEventListener('keyup', e => this.keys[e.key.toLowerCase()] = false);
     }
 
+<<<<<<< HEAD
     setupEatAction() {
         const btn = document.getElementById('eat-btn');
         if (btn) btn.onclick = () => this.eatFood();
@@ -105,6 +132,28 @@ class SurvivalGame {
         if (this.keys['a'] || this.keys['arrowleft']) dx -= 1;
         if (this.keys['d'] || this.keys['arrowright']) dx += 1;
 
+=======
+    gameUpdate(timestamp) {
+        if (this.gameOver) return;
+        
+        const deltaTime = (timestamp - this.lastTime) / 1000;
+        this.lastTime = timestamp;
+
+        this.updateMovement(deltaTime);
+        this.updateParticles(deltaTime);
+        this.checkCollisions(); // New auto-consumption check
+        
+        requestAnimationFrame((t) => this.gameUpdate(t));
+    }
+
+    updateMovement(dt) {
+        let dx = 0, dy = 0;
+        if (this.keys['w'] || this.keys['arrowup']) dy -= 1;
+        if (this.keys['s'] || this.keys['arrowdown']) dy += 1;
+        if (this.keys['a'] || this.keys['arrowleft']) dx -= 1;
+        if (this.keys['d'] || this.keys['arrowright']) dx += 1;
+
+>>>>>>> 9d1c67a4c93aabb09b130b28bb8fd495c5527020
         if (dx !== 0 && dy !== 0) { const mag = Math.sqrt(dx*dx + dy*dy); dx /= mag; dy /= mag; }
 
         if (dx !== 0 || dy !== 0) {
@@ -161,6 +210,7 @@ class SurvivalGame {
         }, 1000);
     }
 
+<<<<<<< HEAD
     checkInteractionDistance() {
         const farmView = document.getElementById('farm-scene');
         if (!farmView) return;
@@ -262,6 +312,42 @@ class SurvivalGame {
         } else {
             this.notify('You are satisfied!', 'lightblue');
         }
+=======
+    checkCollisions() {
+        const px = this.player.x;
+        const py = this.player.y;
+        
+        const tiles = document.querySelectorAll('.tile');
+        tiles.forEach((tileEl, idx) => {
+            const data = this.farmGridData[idx];
+            if (data && data.stage === 'ready') {
+                const tRect = tileEl.getBoundingClientRect();
+                const tx = tRect.left + tRect.width/2;
+                const ty = tRect.top + tRect.height/2;
+                const dist = Math.sqrt((px-tx)**2 + (py-ty)**2);
+                
+                // If player is on top of a ready crop
+                if (dist < 50) {
+                    this.harvestAndEat(idx, tRect);
+                }
+            }
+        });
+    }
+
+    harvestAndEat(index, rect) {
+        const tile = this.farmGridData[index];
+        if (!tile) return;
+
+        // Auto-consume: Restores hunger and gives sunlight
+        this.hunger = Math.min(100, this.hunger + tile.nutrition);
+        this.sunlight += Math.floor(tile.cost * 1.6);
+        
+        this.spawnParticles(rect.left + rect.width/2, rect.top + rect.height/2, 'gold', 20);
+        this.farmGridData[index] = null;
+        this.refreshTileUI(index);
+        this.notify(`Consumiu ${tile.name}! (+${tile.nutrition} vida)`, 'gold');
+        this.updateMainUI();
+>>>>>>> 9d1c67a4c93aabb09b130b28bb8fd495c5527020
     }
 
     die() {
@@ -299,7 +385,25 @@ class SurvivalGame {
         for (let i = 0; i < 64; i++) {
             const el = document.createElement('div');
             el.className = 'tile';
+<<<<<<< HEAD
             el.onclick = () => this.handleTileAction(i);
+            grid.appendChild(el);
+        }
+    }
+
+    refreshTileUI(index) {
+        const tileEl = document.getElementById('farm-grid').children[index];
+        if (!tileEl) return;
+        
+        tileEl.innerHTML = '';
+        const data = this.farmGridData[index];
+        if (data) {
+            const crop = document.createElement('div');
+            crop.className = `crop ${data.stage}`;
+            crop.textContent = data.icon;
+            tileEl.appendChild(crop);
+=======
+            el.onclick = () => this.plantSeed(i);
             grid.appendChild(el);
         }
     }
@@ -318,11 +422,57 @@ class SurvivalGame {
         }
     }
 
+    attemptPlanting() {
+        if (this.gameOver) return;
+        
+        let closestIndex = -1;
+        let minDist = 100;
+        
+        const tiles = document.querySelectorAll('.tile');
+        tiles.forEach((tileEl, idx) => {
+            const data = this.farmGridData[idx];
+            if (data) return; // Only plant on empty tiles
+
+            const tRect = tileEl.getBoundingClientRect();
+            const tx = tRect.left + tRect.width/2;
+            const ty = tRect.top + tRect.height/2;
+            const dist = Math.sqrt((this.player.x-tx)**2 + (this.player.y-ty)**2);
+            if (dist < minDist) {
+                minDist = dist;
+                closestIndex = idx;
+            }
+        });
+
+        if (closestIndex !== -1) {
+            this.plantSeed(closestIndex);
+        }
+    }
+
+    plantSeed(index) {
+        const tileEl = document.querySelectorAll('.tile')[index];
+        const rect = tileEl.getBoundingClientRect();
+
+        if (this.sunlight >= this.selectedSeed.cost) {
+            this.sunlight -= this.selectedSeed.cost;
+            this.farmGridData[index] = { 
+                ...this.selectedSeed, 
+                stage: 'seedling', 
+                plantedAt: Date.now() 
+            };
+            this.refreshTileUI(index);
+            this.spawnParticles(rect.left + rect.width/2, rect.top + rect.height/2, '#8d6e63', 10);
+            this.notify(`Plantou ${this.selectedSeed.name}`, 'var(--primary-light)');
+            this.updateMainUI();
+        } else {
+            this.notify('☀️ Luz Insuficiente!', 'var(--danger-light)');
+>>>>>>> 9d1c67a4c93aabb09b130b28bb8fd495c5527020
+        }
+    }
+
     updateMainUI() {
         document.getElementById('hunger-value').textContent = `${Math.ceil(this.hunger)}%`;
         document.getElementById('hunger-bar-fill').style.width = `${Math.max(0, this.hunger)}%`;
         document.getElementById('sunlight-count').textContent = Math.floor(this.sunlight);
-        document.getElementById('food-count').textContent = Math.floor(this.foodStorage);
         
         // Colors
         const fill = document.getElementById('hunger-bar-fill');

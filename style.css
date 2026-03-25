@@ -321,7 +321,13 @@ body {
     position: relative;
     width: 800px;
     height: 800px;
+<<<<<<< HEAD
     background: #151515;
+=======
+    background: url('assets/farm_background.png'); /* Custom fallback if user wants it */
+    background-size: cover;
+    background-position: center;
+>>>>>>> 9d1c67a4c93aabb09b130b28bb8fd495c5527020
     border-radius: 20px;
     box-shadow: 0 40px 100px rgba(0,0,0,0.8);
     display: flex;
