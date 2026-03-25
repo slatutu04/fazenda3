@@ -26,6 +26,7 @@ class SurvivalGame {
         this.harvests = 0;
         this.currentDay = 1;
         this.dayDuration = 120000; // 2 minutes per day
+        this.lastClosestIndex = -1;
 
         // Player State
         this.player = {
@@ -183,40 +184,48 @@ class SurvivalGame {
         let minDist = 100;
         const tiles = document.querySelectorAll('.tile');
 
-        // Reset all
-        tiles.forEach(t => {
-            t.classList.remove('near');
-            const ghost = t.querySelector('.ghost-preview');
-            if (ghost) ghost.remove();
-        });
-
-        tiles.forEach((tileEl, index) => {
-            const row = Math.floor(index / 8);
-            const col = index % 8;
+        for (let i = 0; i < 64; i++) {
+            const row = Math.floor(i / 8);
+            const col = i % 8;
             const tx = 81.5 + col * 91;
             const ty = 81.5 + row * 91;
             const dist = Math.sqrt((px - tx) ** 2 + (py - ty) ** 2);
 
             if (dist < minDist) {
                 minDist = dist;
-                closestIndex = index;
-            }
-        });
-
-        if (closestIndex !== -1) {
-            const targetTile = tiles[closestIndex];
-            targetTile.classList.add('near');
-
-            // Ghost Preview for planting
-            if (!this.farmGridData[closestIndex]) {
-                const ghost = document.createElement('div');
-                ghost.className = 'ghost-preview';
-                ghost.textContent = this.selectedSeed.icon;
-                targetTile.appendChild(ghost);
+                closestIndex = i;
             }
         }
 
-        document.getElementById('player').classList.toggle('show-interaction', closestIndex !== -1);
+        // Only update DOM if the target tile changed
+        if (closestIndex !== this.lastClosestIndex) {
+            // Cleanup previous
+            if (this.lastClosestIndex !== -1) {
+                const lastTile = tiles[this.lastClosestIndex];
+                if (lastTile) {
+                    lastTile.classList.remove('near');
+                    const ghost = lastTile.querySelector('.ghost-preview');
+                    if (ghost) ghost.remove();
+                }
+            }
+
+            // Apply new
+            if (closestIndex !== -1) {
+                const targetTile = tiles[closestIndex];
+                targetTile.classList.add('near');
+
+                // Ghost Preview
+                if (!this.farmGridData[closestIndex]) {
+                    const ghost = document.createElement('div');
+                    ghost.className = 'ghost-preview';
+                    ghost.textContent = this.selectedSeed.icon;
+                    targetTile.appendChild(ghost);
+                }
+            }
+
+            this.lastClosestIndex = closestIndex;
+            document.getElementById('player').classList.toggle('show-interaction', closestIndex !== -1);
+        }
     }
 
     attemptInteraction() {
@@ -324,6 +333,7 @@ class SurvivalGame {
 
     selectSeed(seed) {
         this.selectedSeed = seed;
+        this.lastClosestIndex = -1; // Force ghost refresh
         this.renderSeedsUI();
     }
 

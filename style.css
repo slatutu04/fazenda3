@@ -459,7 +459,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: left 0.1s linear, top 0.1s linear;
 }
 
 .player-visual {
