@@ -1,76 +1,118 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vencendo a Fome | Survival Farmer</title>
+    <title>Survival Farmer | Overcoming Hunger</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <div class="vignette"></div>
-
-        <!-- Survival UI Sidebar -->
+    <div id="game-app">
+        <!-- Ambient Light Overlay -->
+        <div id="ambient-overlay"></div>
+        
+        <!-- Sidebar Navigation -->
         <aside id="sidebar">
-            <header>
-                <h1>Survival Farmer</h1>
-                <!-- Barra de Fome Crítica -->
-                <div class="hunger-system">
-                    <span class="label">Suficiência Alimentar</span>
-                    <div class="hunger-bar-container">
-                        <div id="hunger-bar-fill" style="width: 100%;"></div>
+            <div class="brand">
+                <h1>Survival<span>Farmer</span></h1>
+                <div class="edition">Overcoming Hunger</div>
+            </div>
+
+            <!-- Survival Status -->
+            <div class="status-panel">
+                <div class="status-item hunger">
+                    <div class="status-header">
+                        <span class="label">Vital Energy</span>
+                        <span id="hunger-value" class="value">100%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="hunger-bar-fill" class="fill"></div>
                     </div>
                 </div>
-                <div class="currency-display">
-                    <span class="icon">☀️</span>
-                    <span id="sunlight-count">20</span>
-                </div>
-            </header>
 
-            <div class="inventory-section">
-                <h3>Sementes Disponíveis</h3>
-                <div id="seed-selector" class="grid-selector"></div>
+                <div class="status-item currency">
+                    <div class="sun-icon">☀️</div>
+                    <div class="currency-info">
+                        <span class="label">Accumulated Light</span>
+                        <span id="sunlight-count" class="amount">20</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="inventory-section">
-                <h3>Cesto de Comida</h3>
-                <div class="food-storage">
-                    <span id="food-count">0</span> unidades
+            <!-- Inventory: Seeds -->
+            <div class="inventory-card">
+                <h3>Available Seeds</h3>
+                <div id="seed-selector" class="seed-grid">
+                    <!-- Dynamic seeds -->
                 </div>
-                <button id="eat-btn">COMER (Repor Fome)</button>
             </div>
 
-            <div class="stats-section">
-                <div class="stat-card">
-                    <span class="label">Sobrevivência</span>
-                    <span id="play-time" class="value">00:00</span>
+            <!-- Storage & Actions -->
+            <div class="storage-card">
+                <div class="storage-info">
+                    <span class="label">Food Basket</span>
+                    <div class="food-counter">
+                        <span id="food-count">0</span>
+                        <span class="unit">units</span>
+                    </div>
+                </div>
+                <button id="eat-btn" class="action-btn">
+                    <span class="icon">🍎</span>
+                    <span class="text">EAT NOW</span>
+                </button>
+            </div>
+
+            <div class="stats-footer">
+                <div class="stat">
+                    <span class="label">Survival Time</span>
+                    <span id="play-time">00:00</span>
                 </div>
             </div>
         </aside>
 
-        <!-- Mundo de Sobrevivência -->
-        <main id="farm-viewport">
-            <div id="farm-grid"></div>
-            <div id="player">
-                <div class="player-sprite">🧑‍🌾</div>
-                <div class="player-shadow"></div>
-                <div id="interaction-ring"></div>
+        <!-- Main Viewport Target -->
+        <main id="game-view">
+            <div id="farm-scene">
+                <!-- Grid will be rendered here -->
+                <div id="farm-grid"></div>
+                
+                <!-- Player Layer -->
+                <div id="player-container">
+                    <div id="player">
+                        <div class="player-visual">🧑‍🌾</div>
+                        <div class="player-aura"></div>
+                        <div class="interaction-indicator">
+                            <span class="key-hint">E</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Particle Layer -->
+                <canvas id="particle-canvas"></canvas>
             </div>
         </main>
 
-        <!-- Alerta de Game Over Overlay -->
+        <!-- Dynamic Feedback -->
+        <div id="notification-area"></div>
+
+        <!-- Overlays -->
         <div id="game-over" class="overlay hidden">
-            <div class="overlay-content">
-                <h2>VOCE SUCUMBIU À FOME</h2>
-                <p>O mundo é cruel com o fazendeiro despreparado.</p>
-                <button onclick="location.reload()">Tentar Sobreviver Novamente</button>
+            <div class="overlay-modal">
+                <div class="death-icon">💀</div>
+                <h2>HUNGER PREVAILED</h2>
+                <p>The cycle of life continues, but without you.</p>
+                <div class="stats-summary">
+                    <div class="final-stat">
+                        <span>Time:</span>
+                        <span id="final-time">00:00</span>
+                    </div>
+                </div>
+                <button class="retry-btn" onclick="location.reload()">RESTART JOURNEY</button>
             </div>
         </div>
-
-        <div id="toast-container"></div>
     </div>
     <script src="game.js"></script>
 </body>
