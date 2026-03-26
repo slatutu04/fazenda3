@@ -3,6 +3,7 @@
  * Implementation by Antigravity AI
  */
 
+/* Game Data & Constants */
 const SEEDS = [
     { id: 'carrot', name: 'Carrot', icon: '🥕', cost: 5, nutrition: 15, growthTime: 5000 },
     { id: 'wheat', name: 'Wheat', icon: '🌾', cost: 12, nutrition: 30, growthTime: 12000 },
@@ -14,7 +15,7 @@ const SEEDS = [
 
 class SurvivalGame {
     constructor() {
-        // Core State
+        /* Core Game State Initialization */
         this.sunlight = 20;
         this.hunger = 100;
         this.foodStorage = 0;
@@ -47,6 +48,7 @@ class SurvivalGame {
     }
 
     init() {
+        /* Game Initial Setup */
         this.resize();
         this.renderSeedsUI();
         this.renderGridUI();
@@ -69,6 +71,7 @@ class SurvivalGame {
     }
 
     setupControls() {
+        /* Input Handling Setup */
         window.addEventListener('keydown', e => {
             const key = e.key.toLowerCase();
             this.keys[key] = true;
@@ -88,6 +91,7 @@ class SurvivalGame {
     }
 
     gameUpdate(timestamp) {
+        /* Main Animation Loop */
         if (this.gameOver) return;
 
         const deltaTime = (timestamp - this.lastTime) / 1000;
@@ -101,6 +105,7 @@ class SurvivalGame {
     }
 
     updateMovement(dt) {
+        /* Player Movement Logic */
         let dx = 0, dy = 0;
         if (this.keys['w'] || this.keys['arrowup']) dy -= 1;
         if (this.keys['s'] || this.keys['arrowdown']) dy += 1;
@@ -138,6 +143,7 @@ class SurvivalGame {
     }
 
     startSurvivalTick() {
+        /* Survival & Growth Simulation Tick */
         setInterval(() => {
             if (this.gameOver) return;
 
@@ -177,6 +183,7 @@ class SurvivalGame {
     }
 
     checkInteractionDistance() {
+        /* Proximity Detection for Tiles */
         const px = this.player.x;
         const py = this.player.y;
 
@@ -229,6 +236,7 @@ class SurvivalGame {
     }
 
     attemptInteraction() {
+        /* Trigger Interaction on Key Press */
         if (this.gameOver) return;
 
         let closestIndex = -1;
@@ -252,6 +260,7 @@ class SurvivalGame {
     }
 
     handleTileAction(index) {
+        /* Tile Interaction (Planting/Harvesting) */
         const tile = this.farmGridData[index];
         const row = Math.floor(index / 8);
         const col = index % 8;
@@ -288,6 +297,7 @@ class SurvivalGame {
     }
 
     eatFood() {
+        /* Consumption Logic */
         if (this.foodStorage <= 0) {
             this.notify('Basket is empty!', 'var(--danger-light)');
             return;
@@ -308,13 +318,14 @@ class SurvivalGame {
     }
 
     die() {
+        /* Game Over State Handler */
         this.gameOver = true;
         this.hunger = 0;
         document.getElementById('game-over').classList.remove('hidden');
         document.getElementById('final-time').textContent = document.getElementById('play-time').textContent;
     }
 
-    // UI Rendering
+    /* UI Rendering Methods */
     renderSeedsUI() {
         const container = document.getElementById('seed-selector');
         container.innerHTML = '';
@@ -338,6 +349,7 @@ class SurvivalGame {
     }
 
     renderGridUI() {
+        /* Generate Initial Farm Grid */
         const grid = document.getElementById('farm-grid');
         grid.innerHTML = '';
         for (let i = 0; i < 64; i++) {
@@ -385,6 +397,7 @@ class SurvivalGame {
     }
 
     notify(msg, color) {
+        /* Notification System */
         const area = document.getElementById('notification-area');
         const toast = document.createElement('div');
         toast.className = 'toast';
@@ -400,6 +413,7 @@ class SurvivalGame {
 
     // Effects System
     spawnParticles(x, y, color, count) {
+        /* Visual Effects Generator */
         for (let i = 0; i < count; i++) {
             this.particles.push({
                 x, y,
